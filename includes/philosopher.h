@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/01/08 02:10:27 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/01/10 13:52:08 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ typedef struct s_philo
     t_boolean has_right_fork;
     pthread_mutex_t *left_fork;
     pthread_mutex_t *right_fork;
-    pthread_mutex_t *print_mutex;
+    pthread_t *philo_thread;
     struct timeval last_eat;
 } t_philo;
 
 typedef struct s_data
 {
-    long time_stamp;
+    long time_start;
     int nb_philo;
     int time_to_die;
     int time_to_eat;
@@ -69,6 +69,7 @@ int ft_parse_arguments(t_data *data, int argc, char **argv);
 //MAIN
 int ft_init_data(t_data *data);
 int ft_init_philosophers(t_data *data);
+void ft_clean(t_data *data);
 //PRINT
-void print_status_change(t_philo *philo, t_data *data);
+void print_status_change(t_philo *philo, t_data data);
 #endif

@@ -4,7 +4,7 @@ DEST_DIR = dist/
 
 # Main logic of the program: dir and filenames.
 MAIN_DIR = srcs/
-MAIN = philosopher parser print utils# Main file of the program.
+MAIN = main philosopher parser print utils# Main file of the program.
 
 SRC = $(addsuffix .c, $(addprefix $(MAIN_DIR), $(MAIN))) \
 	

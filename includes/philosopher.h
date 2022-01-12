@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/01/10 13:52:08 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/01/12 13:55:27 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ typedef struct s_data
     int time_to_eat;
     int time_to_sleep;
     int nb_times_must_eat;
+    t_boolean pause;
     t_philo **philos;
-
 } t_data;
 
 // UTILS
@@ -66,10 +66,13 @@ t_boolean ft_isdigit(int c);
 // PARSE
 int ft_check_arguments(int argc, char **argv);
 int ft_parse_arguments(t_data *data, int argc, char **argv);
-//MAIN
+//PHILOSOPHER
 int ft_init_data(t_data *data);
 int ft_init_philosophers(t_data *data);
 void ft_clean(t_data *data);
+int ft_main_loop (t_data *data);
+//MAIN
+t_boolean ft_check_right_fork (int philo_id, t_data *data);
 //PRINT
 void print_status_change(t_philo *philo, t_data data);
 #endif

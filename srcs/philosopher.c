@@ -25,21 +25,9 @@ int main(int argc, char **argv)
     if (ft_init_philosophers(&data) == -1)
         return (-1);
     // MAIN LOOP
-
+    if (ft_main_loop(&data) == -1)
+        return (-1);
     ft_clean(&data);
-}
-
-void ft_clean(t_data *data)
-{
-    int i;
-
-    i = -1;
-    while (++i < data->nb_philo)
-    {
-        free(data->philos[i]);
-        data->philos[i] = NULL;
-    }
-    free(data->philos);
 }
 
 int ft_init_data(t_data *data)
@@ -47,6 +35,7 @@ int ft_init_data(t_data *data)
     data = (t_data *)malloc(sizeof(t_data));
     if (!data)
         return (-1);
+    data->pause = FALSE;
     data->nb_philo = 0;
     data->time_to_die = 0;
     data->time_to_eat = 0;
@@ -81,4 +70,18 @@ int ft_init_philosophers(t_data *data)
         i++;
     }
     return (0);
+}
+
+
+void ft_clean(t_data *data)
+{
+    int i;
+
+    i = -1;
+    while (++i < data->nb_philo)
+    {
+        free(data->philos[i]);
+        data->philos[i] = NULL;
+    }
+    free(data->philos);
 }

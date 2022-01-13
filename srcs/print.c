@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:21:27 by jcervill          #+#    #+#             */
-/*   Updated: 2022/01/08 20:08:13 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/01/13 12:46:06 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ void print_status_change(t_philo *philo, t_data data)
     long current_time;
     long time_diff;
 
-    usleep(100000);
     current_time = ft_get_current_time();
     time_diff = current_time - data.time_start;
     printf("[%ld - %ld = %ld] ", current_time, data.time_start, time_diff);
@@ -33,4 +32,5 @@ void print_status_change(t_philo *philo, t_data data)
         printf("is sleeping\n");
     else if (philo->status == DEAD)
         printf("died\n");
+    return;
 }

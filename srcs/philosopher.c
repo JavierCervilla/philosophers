@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/01/10 12:58:15 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/01/13 12:58:32 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,9 +22,11 @@ int main(int argc, char **argv)
         return (-1);
     if (ft_parse_arguments(&data, argc, argv))
         return (-1);
+    printf("PRE INIT F¿PHILOS\n" );
     if (ft_init_philosophers(&data) == -1)
         return (-1);
     // MAIN LOOP
+    printf("PRE MAINLOOP" );
     if (ft_main_loop(&data) == -1)
         return (-1);
     ft_clean(&data);
@@ -66,11 +68,14 @@ int ft_init_philosophers(t_data *data)
             return (-1);
         data->philos[i]->id = i + 1;
         data->philos[i]->status = THINK;
+        data->philos[i]->times_eat = 0;
+        pthread_create(data->philos[i]->philo_thread, NULL, ft_main_loop, NULL);
         print_status_change(data->philos[i], *data);
         i++;
     }
     return (0);
 }
+
 
 
 void ft_clean(t_data *data)

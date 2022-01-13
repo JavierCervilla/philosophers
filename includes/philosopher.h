@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/01/12 13:55:27 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/01/13 12:39:06 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,13 @@ typedef enum e_boolean
     FALSE,
     TRUE
 } t_boolean;
+
+typedef enum e_forks
+{
+    LEFT,
+    RIGHT,
+    BOTH
+} t_forks;
 
 typedef enum e_status
 {
@@ -43,7 +50,8 @@ typedef struct s_philo
     pthread_mutex_t *left_fork;
     pthread_mutex_t *right_fork;
     pthread_t *philo_thread;
-    struct timeval last_eat;
+    long last_eat;
+    int times_eat;
 } t_philo;
 
 typedef struct s_data
@@ -73,6 +81,14 @@ void ft_clean(t_data *data);
 int ft_main_loop (t_data *data);
 //MAIN
 t_boolean ft_check_right_fork (int philo_id, t_data *data);
+t_boolean ft_check_left_fork (int philo_id, t_data *data);
+int take_right_fork(t_philo *philo);
+int take_left_fork(t_philo *philo);
+t_boolean ft_eat(int philo_id, t_data *data);
+void ft_drop_forks(int philo_id, t_data *data, t_forks fork);
+void ft_sleep(int philo_id, t_data *data);
+void ft_think(int philo_id, t_data *data);
+
 //PRINT
 void print_status_change(t_philo *philo, t_data data);
 #endif

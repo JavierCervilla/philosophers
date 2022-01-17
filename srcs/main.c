@@ -5,191 +5,87 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/12 13:45:02 by jcervill          #+#    #+#             */
-/*   Updated: 2022/01/13 12:42:05 by jcervill         ###   ########.fr       */
+/*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
+/*   Updated: 2022/01/17 13:44:27 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-int ft_main_loop (t_data *data)
+int main(int argc, char **argv)
+{
+    t_data data;
+
+    if (ft_check_arguments(argc, argv) == -1)
+        return (-1);
+    if (ft_init_data(&data) == -1)
+        return (-1);
+    if (ft_parse_arguments(&data, argc, argv))
+        return (-1);
+    
+    if (ft_init_philosophers(&data) == -1)
+        return (-1);
+    ft_main_loop((void *)&data);
+    ft_clean(&data);
+}
+
+int ft_init_data(t_data *data)
+{
+    data = (t_data *)malloc(sizeof(t_data));
+    if (!data)
+        return (-1);
+    data->pause = FALSE;
+    data->nb_philo = 0;
+    data->time_to_die = 0;
+    data->time_to_eat = 0;
+    data->time_to_sleep = 0;
+    data->nb_times_must_eat = 0;
+    data->time_start = ft_get_current_time();
+    data->philos = NULL;
+    pthread_mutex_init(&data->start, NULL);
+    pthread_mutex_lock(&data->start);
+    return (0);
+}
+
+int ft_init_philosophers(t_data *data)
+{
+    int i;
+    //t_boolean error;
+
+    i = 0;
+    data->philos = (t_philo **)malloc(sizeof(t_philo *) * data->nb_philo);
+    if (!data->philos)
+        return (-1);
+    while (i < data->nb_philo)
+    {
+        printf("LLEGO");
+        data->philos[i] = (t_philo *)malloc(sizeof(t_philo));
+        if (!data->philos[i])
+            return (-1);
+        pthread_mutex_init(&data->philos[i]->right_fork, NULL);
+        
+        data->philos[i]->id = i + 1;
+        data->philos[i]->status = THINK;
+        data->philos[i]->times_eat = 0;
+
+        pthread_create(&data->philos[i]->philo_thread, NULL, ft_main_loop, (void *)data);
+
+        print_status_change(data->philos[i], *data);
+        i++;
+    }
+    return (0);
+}
+
+
+void ft_clean(t_data *data)
 {
     int i;
 
     i = -1;
-    while(!data->pause){
-        // iteramos en los philos
-        // - check for right fork:
-        //      - si:
-        //          - has left fork?
-        //              - si:
-        //                  eat()
-        //                  soltar_forks()
-        //                  sleep()
-        //                  next()    
-        //              - no:
-        //                  previous has right fork?
-        //                      - si:
-        //                          soltar_forks()
-        //                          next()
-        //                      - no:
-        //                          take_left_fork()
-        //                          eat()
-        //                          soltar_forks()
-        //                          sleep()
-        //                          next()
-        //      - no:
-        //          - nextone has right fork?
-        //              - si: 
-        //                  next()
-        //              - no: 
-        //                  take_right_fork     
-        while(++i < data->nb_philo)
-        {
-            printf("LLEGO");
-            //1. PHILO HAS RIGHT FORK?
-            if (ft_check_right_fork(i, data))
-            {
-                //YES
-                //1.2. PHILO HAS LEFT FORK?
-                if (ft_check_left_fork(i, data))
-                {
-                    // YES
-                    // EAT
-                    ft_eat(i, data);
-                    // DROP FORKS
-                    ft_drop_forks(i, data, BOTH);
-                    // SLEEP
-                    ft_sleep(i, data);
-                    // NEXT
-                    continue;
-                }
-                // NO
-                else
-                {
-                    //1.3. PREVIOUS HAS RIGHT?
-                    if (ft_check_right_fork(i - 1 % data->nb_philo, data))
-                    {
-                        // YES
-                        // DROP FORKS
-                        ft_drop_forks(i, data, RIGHT);
-                        // NEXT
-                        continue;
-                    }
-                    else
-                    {
-                        // NO
-                        take_left_fork(data->philos[i]);
-                        // EAT
-                        ft_eat(i, data);
-                        // DROP FORKS
-                        ft_drop_forks(i, data, BOTH);
-                        // NEXT
-                        continue;
-                    }
-                }
-            }
-            else
-            {
-                // NO
-                // NEXT HAS RIGHT?
-                if (ft_check_right_fork(i + 1 % data->nb_philo, data))
-                {
-                    continue;
-                    // NEXT
-                }
-                else
-                {
-                    take_right_fork(data->philos[i]);
-                    //NEXT or START again
-                    continue;
-                }
-            }
-            print_status_change(data->philos[i], *data);
-
-        }
-        i = -1;
+    while (++i < data->nb_philo)
+    {
+        free(data->philos[i]);
+        data->philos[i] = NULL;
     }
-    return(0);
-}
-
-
-t_boolean ft_eat(int philo_id, t_data *data)
-{
-    t_philo *philo;
-    
-    philo = data->philos[philo_id];
-    philo->last_eat = ft_get_current_time();
-    philo->times_eat++;
-    philo->status = EAT;
-    sleep((unsigned int)data->time_to_eat);
-    if (philo->times_eat == data->nb_times_must_eat)
-        return TRUE;
-    return FALSE;
-}
-
-void ft_think(int philo_id, t_data *data)
-{
-    t_philo *philo;
-
-    philo = data->philos[philo_id];
-    philo->status = THINK;
-}
-
-void ft_sleep(int philo_id, t_data *data)
-{
-    t_philo *philo;
-
-    philo = data->philos[philo_id];
-    philo->status = SLEEP;
-    print_status_change(philo, *data);
-    sleep(data->time_to_sleep);
-}
-
-void ft_drop_forks(int philo_id, t_data *data, t_forks fork)
-{
-    t_philo *philo;
-
-    philo = data->philos[philo_id];
-    if (fork == LEFT || fork == BOTH)
-        pthread_mutex_unlock(philo->left_fork);
-    if (fork == RIGHT || fork == BOTH)
-        pthread_mutex_unlock(philo->right_fork);
-    
-}
-
-t_boolean ft_check_right_fork (int philo_id, t_data *data)
-{
-    t_philo *philo;
-
-    philo = data->philos[philo_id];
-    if (philo->has_right_fork)
-        return TRUE;
-    return FALSE;
-}
-
-t_boolean ft_check_left_fork (int philo_id, t_data *data)
-{
-    t_philo *philo;
-
-    philo = data->philos[philo_id];
-    if (philo->has_left_fork)
-        return TRUE;
-    return FALSE;
-}
-
-int take_right_fork(t_philo *philo)
-{
-    pthread_mutex_lock(philo->right_fork);
-    philo->has_right_fork = TRUE;
-    printf("Philo Nº%d takes right fork", philo->id);
-    return 1;
-}
-
-int take_left_fork(t_philo *philo)
-{
-    pthread_mutex_lock(philo->left_fork);
-    philo->has_left_fork = TRUE;
-    printf("Philo Nº%d takes left fork", philo->id);
-    return 1;
+    free(data->philos);
 }

@@ -1,24 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   check.c                                            :+:      :+:    :+:   */
+/*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/17 13:19:31 by jcervill          #+#    #+#             */
-/*   Updated: 2022/02/28 12:32:23 by jcervill         ###   ########.fr       */
+/*   Created: 2022/02/28 11:37:25 by jcervill          #+#    #+#             */
+/*   Updated: 2022/02/28 13:25:56 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-int check_philo_dead(t_data *data)
+t_boolean	throw_in_error(t_boolean error, char *msg)
 {
-    int i;
-    long current_time;
-    (void)data;
-    
-    i = -1;
-    current_time = ft_get_current_time();
-    return (1);
+	if (error == TRUE)
+	{
+		perror(msg);
+		// TODO: REDIR TO EXIT OR EXIT HERE
+	}
+	return (error);
+
 }

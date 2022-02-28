@@ -31,14 +31,7 @@ int ft_check_arguments(int argc, char **argv)
 				bad_args = TRUE;
 		}
 	}
-	if (bad_args)
-	{
-		printf("Usage: ./philosopher <number of philosophers> ");
-		printf("<time to die> <time to eat> <time to sleep> ");
-		printf("<number of time each philosopher will eat>\n");
-		return (-1);
-	}
-	return (0);
+	return (bad_args);
 }
 
 int ft_parse_arguments(t_data *data, int argc, char **argv)
@@ -48,11 +41,13 @@ int ft_parse_arguments(t_data *data, int argc, char **argv)
 
 	bad_args = FALSE;
 	i = 0;
-	while (i < NUM_ARGS)
+	while (i < argc && i < NUM_ARGS)
 	{
-		data->params[i] = ft_atoi(argv[i]);
+		data->params[i] = ft_atoi(argv[i + 1]);
+		printf("PARAM: %d\n", data->params[i]);
 		if (data->params[i] < 1)
 			bad_args = TRUE;
+		i++;
 	}
 	return (bad_args);
 }

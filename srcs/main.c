@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/01/17 13:44:27 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/02/28 10:57:08 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,8 @@ int main(int argc, char **argv)
         return (-1);
     if (ft_init_data(&data) == -1)
         return (-1);
-    if (ft_parse_arguments(&data, argc, argv))
+    if (ft_parse_arguments(&data, argc - 1, argv))
         return (-1);
-    
     if (ft_init_philosophers(&data) == -1)
         return (-1);
     ft_main_loop((void *)&data);
@@ -36,10 +35,7 @@ int ft_init_data(t_data *data)
         return (-1);
     data->pause = FALSE;
     data->nb_philo = 0;
-    data->time_to_die = 0;
-    data->time_to_eat = 0;
-    data->time_to_sleep = 0;
-    data->nb_times_must_eat = 0;
+    ft_bzero((void *)data->params, sizeof(data->params));
     data->time_start = ft_get_current_time();
     data->philos = NULL;
     pthread_mutex_init(&data->start, NULL);

@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:58:32 by jcervill          #+#    #+#             */
-/*   Updated: 2022/01/08 02:10:04 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/02/28 10:51:48 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,4 +58,17 @@ long ft_get_current_time()
 
     gettimeofday(&time_Stamp, NULL);
     return (ft_get_miliseconds(time_Stamp));
+}
+
+void	ft_bzero(void *str, size_t n)
+{
+	unsigned int	i;
+	unsigned char	*aux;
+
+	aux = str;
+	i = 0;
+	while (n-- > 0)
+	{
+		aux[i++] = 0;
+	}
 }

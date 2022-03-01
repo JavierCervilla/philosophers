@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/02/28 13:51:14 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:36:03 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,18 @@ int	main(int argc, char **argv)
 
 	data = NULL;
 	if (throw_in_error(ft_check_arguments(argc, argv), ERR_BAD_ARGS))
-		return (-1);
+		return (STATUS_ERR);
 	data = ft_init_data(data);
 	if (!data)
 		throw_in_error(TRUE, ERR_INIT);
 	if (throw_in_error(ft_parse_arguments(data, argc - 1, argv), ERR_BAD_ARGS))
-		return (-1);
-	if (throw_in_error(ft_init_philosophers(data), ERR_INIT))
-		return (-1);
-	ft_main_loop((void *)data);
+		return (STATUS_ERR);
+	if (throw_in_error(ft_init_philosophers(data), ERR_INIT_PHILO))
+		return (STATUS_ERR);
+	if (throw_in_error(ft_init_threads(data), ERR_INIT_TH))
+		return (STATUS_ERR);
 	ft_clean(data);
+	return(STATUS_NO_ERR);
 }
 
 t_data	*ft_init_data(t_data *data)
@@ -35,13 +37,33 @@ t_data	*ft_init_data(t_data *data)
 	data = (t_data *)malloc(sizeof(t_data));
 	if (!data)
 		return (NULL);
-	data->pause = FALSE;
+	data->died = FALSE;
 	ft_bzero((void *)(data)->params, sizeof(data->params));
 	data->time_start = ft_get_current_time();
 	data->philos = NULL;
 	pthread_mutex_init(&(data)->start, NULL);
 	pthread_mutex_lock(&(data)->start);
 	return (data);
+}
+
+int	ft_init_threads(t_data *data)
+{
+	t_philo	**philos;
+	int		i;
+
+	philos = (t_philo **)data->philos;
+	i = -1;
+	if (!data->philos)
+		return (TRUE);
+	while (++i < data->params[NUM_PHILOS])
+	{
+		if (pthread_create(&(philos[i]->th), NULL,
+				&eat_think_sleep, philos[i]) != 0)
+			return (TRUE);
+		philos[i]->last_eat = ft_get_current_time();
+	}
+	// TODO: DEATH CHECKER FOR MAIN THREAD
+	return (FALSE);
 }
 
 int	ft_init_philosophers(t_data *data)
@@ -61,6 +83,9 @@ int	ft_init_philosophers(t_data *data)
 		if (!data->philos[i])
 			return (-1);
 		data->philos[i]->id = i + 1;
+		data->philos[i]->data = (void *)malloc(sizeof(t_data *));
+		if (!data->philos[i]->data)
+			return (-1);
 		data->philos[i]->data = (void *)data;
 		data->philos[i]->r_fork = i;
 		pthread_mutex_init(&data->forks[i], NULL);

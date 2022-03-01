@@ -10,7 +10,7 @@
             "request": "launch",
             "targetArchitecture": "x86_64",
             "program": "${workspaceFolder}/dist/philo",
-            "args": ["3", "300", "200", "200", "3"],
+            "args": ["8", "300", "200", "200", "3"],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

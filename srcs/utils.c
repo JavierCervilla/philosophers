@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:58:32 by jcervill          #+#    #+#             */
-/*   Updated: 2022/02/28 10:51:48 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:38:02 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,16 @@ long ft_get_miliseconds(struct timeval time_Stamp)
 
 long ft_get_current_time()
 {
-    struct timeval time_Stamp;
+	struct timeval time_Stamp;
+	pthread_mutex_t mutex;
+	long time;
 
-    gettimeofday(&time_Stamp, NULL);
-    return (ft_get_miliseconds(time_Stamp));
+	pthread_mutex_init(&mutex, NULL);
+	pthread_mutex_lock(&mutex);
+	gettimeofday(&time_Stamp, NULL);
+	time = ft_get_miliseconds(time_Stamp);
+	pthread_mutex_unlock(&mutex);
+	return time;
 }
 
 void	ft_bzero(void *str, size_t n)

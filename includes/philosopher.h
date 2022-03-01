@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/02/28 13:51:03 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/01 13:32:53 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,12 +31,20 @@
 # define DYING "died"
 # define THINKING "is thinking"
 # define SLEEPING "is sleeping"
+# define DROPING_FORK "has dropen a fork"
+
 
 # define ERR_BAD_ARGS "\
 Usage: ./philosopher <number of philosophers> \
 <time to die> <time to eat> <time to sleep> \
 <number of time each philosopher will eat>"
-# define ERR_INIT "Error: Init"
+# define ERR_INIT "Error: Initiaizing program."
+# define ERR_INIT_PHILO "Error: Initializing Philos."
+# define ERR_INIT_TH "Error: Initializing Philo`s threads."
+
+# define STATUS_NO_ERR 0
+# define STATUS_ERR 1
+
 
 typedef enum e_boolean
 {
@@ -65,27 +73,28 @@ typedef struct s_mutex
 	pthread_mutex_t mutex;
 } t_mutex;
 
-typedef struct s_philo
+typedef struct	s_philo
 {
-	int id;
-	t_status status;
-	t_boolean has_left_fork;
-	t_boolean has_right_fork;
-	int l_fork;
-	int r_fork;
-	long last_eat;
-	int times_eat;
-	void	*data;
+	int			id;
+	t_status	status;
+	pthread_t	th;
+	t_boolean	has_left_fork;
+	t_boolean	has_right_fork;
+	int			l_fork;
+	int			r_fork;
+	long		last_eat;
+	int			times_eat;
+	void		*data;
 } t_philo;
-
 
 typedef struct s_data
 {
 	long time_start;
 	int params[NUM_ARGS];
-	t_boolean pause;
+	t_boolean died;
 	t_philo **philos;
 	pthread_mutex_t start;
+	pthread_mutex_t typing;
 	pthread_mutex_t *forks;
 } t_data;
 
@@ -103,19 +112,21 @@ int			ft_parse_arguments(t_data *data, int argc, char **argv);
 //PHILOSOPHER
 t_data		*ft_init_data(t_data *data);
 int			ft_init_philosophers(t_data *data);
+int			ft_init_threads(t_data *data);
 void		ft_clean(t_data *data);
-void		*ft_main_loop (void *args);
+void		*eat_think_sleep(void *philo_address);
 //MAIN
+void		eating_routine(void	*philo_address);
 t_boolean	ft_check_right_fork (int philo_id, t_data *data);
 t_boolean	ft_check_left_fork (int philo_id, t_data *data);
 void		take_right_fork(t_philo *philo);
 void		take_left_fork(t_philo *philo);
-t_boolean	ft_eat(int philo_id, t_data *data);
-void		ft_drop_forks(int philo_id, t_data *data, t_forks fork);
-void		ft_sleep(int philo_id, t_data *data);
-void		ft_think(int philo_id, t_data *data);
+t_boolean	ft_eat(t_philo *philo);
+void		ft_drop_forks(t_philo *philo, t_forks fork);
+void		ft_sleep(t_philo *philo);
+void		ft_think(t_philo *philo);
 //CHECK
 int			check_philo_dead(t_data *data);
 //PRINT
-void		print_status_change(t_philo *philo, t_data data);
+void		print_status_change(t_philo *philo, char *status);
 #endif

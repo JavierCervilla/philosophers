@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/01 13:36:03 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 12:54:22 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ int	main(int argc, char **argv)
 		return (STATUS_ERR);
 	if (throw_in_error(ft_init_threads(data), ERR_INIT_TH))
 		return (STATUS_ERR);
+/* 	while(!data->died)
+		continue; */
 	ft_clean(data);
 	return(STATUS_NO_ERR);
 }

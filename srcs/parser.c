@@ -20,7 +20,7 @@ int ft_check_arguments(int argc, char **argv)
 
 	i = 0;
 	bad_args = FALSE;
-	if (argc != 6)
+	if (argc > 6 || argc < 5)
 		bad_args = TRUE;
 	while (argv[++i])
 	{

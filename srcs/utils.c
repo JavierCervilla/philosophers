@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:58:32 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/01 13:38:02 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 12:50:38 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,55 +14,75 @@
 
 int ft_atoi(char *str)
 {
-    int sum;
-    int sign;
-    int found;
+	int sum;
+	int sign;
+	int found;
 
-    sum = 0;
-    sign = 1;
-    found = 1;
-    while (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\f' || *str == '\r')
-        str++;
-    if (*str == '-')
-        sign = -1;
-    if (*str == '-' || *str == '+')
-        str++;
-    while (*str && found)
-    {
-        if (*str >= '0' && *str <= '9')
-            sum = sum * 10 + *str - '0';
-        else
-            found = 0;
-        str++;
-    }
-    return (sign * sum);
+	sum = 0;
+	sign = 1;
+	found = 1;
+	while (*str == ' ' || *str == '\t' || *str == '\n' || *str == '\f' || *str == '\r')
+		str++;
+	if (*str == '-')
+		sign = -1;
+	if (*str == '-' || *str == '+')
+		str++;
+	while (*str && found)
+	{
+		if (*str >= '0' && *str <= '9')
+			sum = sum * 10 + *str - '0';
+		else
+			found = 0;
+		str++;
+	}
+	return (sign * sum);
 }
 
 t_boolean ft_isdigit(int c)
 {
-    if (c >= '0' && c <= '9')
-    {
-        return (TRUE);
-    }
-    return (FALSE);
+	if (c >= '0' && c <= '9')
+	{
+		return (TRUE);
+	}
+	return (FALSE);
 }
 
-long ft_get_miliseconds(struct timeval time_Stamp)
+long long diff_time (long long t1, long long t2)
 {
-    return (time_Stamp.tv_sec * 1000 + time_Stamp.tv_usec / 1000);
+	return (t1 - t2);
+}
+void	smart_sleep(long long time, void *data_address)
+{
+	t_data		*data;
+	long long	i;
+
+	data = (t_data *)data_address;
+	i = ft_get_current_time();
+	while (!(data->died))
+	{
+		if (diff_time(i, ft_get_current_time()) >= time)
+			break ;
+		usleep(50);
+	}
 }
 
-long ft_get_current_time()
+long long ft_get_miliseconds(struct timeval timestamp)
 {
-	struct timeval time_Stamp;
+	return (timestamp.tv_sec * 1000 + timestamp.tv_usec / 1000);
+}
+
+long long ft_get_current_time()
+{
+	struct timeval timestamp;
 	pthread_mutex_t mutex;
 	long time;
 
 	pthread_mutex_init(&mutex, NULL);
 	pthread_mutex_lock(&mutex);
-	gettimeofday(&time_Stamp, NULL);
-	time = ft_get_miliseconds(time_Stamp);
+	gettimeofday(&timestamp, NULL);
+	time = ft_get_miliseconds(timestamp);
 	pthread_mutex_unlock(&mutex);
+	pthread_mutex_destroy(&mutex);
 	return time;
 }
 

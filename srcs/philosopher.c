@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 13:45:02 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 15:22:54 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:49:10 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,21 +17,21 @@ void	*eat_think_sleep(void *philo_address)
 	t_philo	*philo;
 
 	philo = (t_philo *)philo_address;
-	if (philo->id % 2)
+	if (!philo)
+		return (NULL);
+	if (philo->id % 2 == 0)
 	{
-		printf("INITIAL SLEEP ID: %d\n", philo->id);
-		usleep(2);
+		smart_sleep(2);
 	}
 	while (!philo->dt->died)
 	{
-		printf("INITIAL ROUTINE: %d\n", philo->id);
-		eating_routine(philo);
+		if (!philo->dt->died)
+			eating_routine(philo);
 		if (!philo->dt->died)
 			ft_sleep(philo);
 		if (!philo->dt->died)
 			ft_think(philo);
 	}
-	printf("salgo de rutina\n");
 	return (NULL);
 }
 
@@ -57,18 +57,29 @@ void	eating_routine(t_philo *philo)
 t_boolean ft_eat(t_philo *philo)
 {
 
-/* 	pthread_mutex_lock(&data->start);
+	pthread_mutex_lock(&philo->dt->start);
 	philo->last_eat = ft_get_current_time();
-	pthread_mutex_unlock(&data->start); */
+	pthread_mutex_unlock(&philo->dt->start);
 	pthread_mutex_lock(&philo->dt->start);
 	print_status_change(philo, EATING);
-	smart_sleep(philo->dt->params[TIME_TO_EAT], philo->dt);
+	smart_sleep(philo->dt->params[TIME_TO_EAT]);
 	philo->times_eat++;
 	pthread_mutex_unlock(&philo->dt->start);
 	if (philo->times_eat == philo->dt->params[NUM_TIMES_EAT])
 		return TRUE;
 	return FALSE;
 }
+
+void ft_drop_forks(t_philo *philo)
+{
+	printf("SULETO\n");
+	pthread_mutex_unlock(philo->has_right_fork);
+	pthread_mutex_unlock(philo->has_left_fork);
+	print_status_change(philo, DROPING_FORK);
+}
+
+
+
 
 void ft_think(t_philo	*philo)
 {
@@ -80,25 +91,8 @@ void ft_sleep(t_philo *philo)
 {
 	philo->status = SLEEP;
 	print_status_change(philo, SLEEPING);
-	smart_sleep(philo->dt->params[TIME_TO_SLEEP], philo->dt);
+	smart_sleep(philo->dt->params[TIME_TO_SLEEP]);
 }
-
-void ft_drop_forks(t_philo *philo)
-{
-	pthread_mutex_unlock(philo->has_right_fork);
-	pthread_mutex_unlock(philo->has_left_fork);
-	// if (fork == LEFT || fork == BOTH)
-	// {
-	// 	print_status_change(philo, DROPING_FORK);
-	// 	pthread_mutex_unlock(philo->has_left_fork);
-	// }
-	// if (fork == RIGHT || fork == BOTH)
-	// {
-	// 	print_status_change(philo, DROPING_FORK);
-	// 	pthread_mutex_unlock(philo->has_right_fork);
-	// }
-}
-
 
 
 void	take_right_fork (t_philo *philo)

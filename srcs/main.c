@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 15:09:22 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:35:31 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,9 @@ int	ft_init_threads(t_data *data)
 		if (pthread_create(&data->philos[i].th, NULL,
 				eat_think_sleep, &data->philos[i]) != 0)
 			return (TRUE);
+		pthread_mutex_lock(&data->start);
 		data->philos[i].last_eat = ft_get_current_time();
+		pthread_mutex_unlock(&data->start);
 	}
 	// TODO: DEATH CHECKER FOR MAIN THREAD
 /* 	while(!data->died)

@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:58:32 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 14:38:52 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:45:39 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,18 +51,14 @@ long long diff_time (long long t1, long long t2)
 {
 	return (t1 - t2);
 }
-void	smart_sleep(long long time, void *data_address)
+void	smart_sleep(int time)
 {
-	t_data		*data;
 	long long	i;
 
-	data = (t_data *)data_address;
 	i = ft_get_current_time();
-	while (!(data->died))
+	while (ft_get_current_time() < (i + time))
 	{
-		if (diff_time(i, ft_get_current_time()) >= time)
-			break ;
-		usleep(50);
+		usleep(500);
 	}
 }
 

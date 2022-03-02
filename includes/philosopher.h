@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 15:16:21 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:44:36 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,7 +104,7 @@ int			ft_atoi(char *str);
 long long	ft_get_current_time();
 long long	diff_time (long long t1, long long t2);
 t_boolean	ft_isdigit(int c);
-void		smart_sleep(long long time, void *data_address);
+void		smart_sleep(int time);
 // ERROR
 t_boolean	throw_in_error(t_boolean error, char *msg);
 // PARSE

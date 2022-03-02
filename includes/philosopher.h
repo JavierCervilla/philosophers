@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 12:50:53 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:16:21 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,13 +78,13 @@ typedef struct	s_philo
 	int			id;
 	t_status	status;
 	pthread_t	th;
-	t_boolean	has_left_fork;
-	t_boolean	has_right_fork;
-	int			l_fork;
-	int			r_fork;
+	pthread_mutex_t	*has_left_fork;
+	pthread_mutex_t	*has_right_fork;
+/* 	int			l_fork;
+	int			r_fork; */
 	long long	last_eat;
 	int			times_eat;
-	void		*data;
+	struct s_data	*dt;
 } t_philo;
 
 typedef struct s_data
@@ -92,7 +92,7 @@ typedef struct s_data
 	long long		time_start;
 	int				params[NUM_ARGS];
 	t_boolean		died;
-	t_philo			**philos;
+	t_philo			*philos;
 	pthread_mutex_t	start;
 	pthread_mutex_t	typing;
 	pthread_mutex_t	*forks;
@@ -101,7 +101,6 @@ typedef struct s_data
 // UTILS
 void		ft_bzero(void *str, size_t n);
 int			ft_atoi(char *str);
-long long	ft_get_miliseconds(struct timeval time_Stamp);
 long long	ft_get_current_time();
 long long	diff_time (long long t1, long long t2);
 t_boolean	ft_isdigit(int c);
@@ -118,15 +117,15 @@ int			ft_init_threads(t_data *data);
 void		ft_clean(t_data *data);
 void		*eat_think_sleep(void *philo_address);
 //MAIN
-void		eating_routine(void	*philo_address);
-t_boolean	ft_check_right_fork (void	*philo_address);
-t_boolean	ft_check_left_fork (void	*philo_address);
-void		take_right_fork(void	*philo_address);
-void		take_left_fork(void	*philo_address);
-t_boolean	ft_eat(void	*philo_address);
-void		ft_drop_forks(void	*philo_address, t_forks fork);
-void		ft_sleep(void	*philo_address);
-void		ft_think(void	*philo_address);
+void		eating_routine(t_philo *philo);
+t_boolean	ft_check_right_fork (t_philo *philo);
+t_boolean	ft_check_left_fork (t_philo *philo);
+void		take_right_fork(t_philo *philo);
+void		take_left_fork(t_philo *philo);
+t_boolean	ft_eat(t_philo *philo);
+void		ft_drop_forks(t_philo *philo);
+void		ft_sleep(t_philo *philo);
+void		ft_think(t_philo *philo);
 //CHECK
 int			check_philo_dead(t_data *data);
 //PRINT

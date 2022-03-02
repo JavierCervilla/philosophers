@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:58:32 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 12:50:38 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 14:38:52 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,24 +66,14 @@ void	smart_sleep(long long time, void *data_address)
 	}
 }
 
-long long ft_get_miliseconds(struct timeval timestamp)
-{
-	return (timestamp.tv_sec * 1000 + timestamp.tv_usec / 1000);
-}
 
-long long ft_get_current_time()
+
+long long ft_get_current_time(void)
 {
 	struct timeval timestamp;
-	pthread_mutex_t mutex;
-	long time;
 
-	pthread_mutex_init(&mutex, NULL);
-	pthread_mutex_lock(&mutex);
 	gettimeofday(&timestamp, NULL);
-	time = ft_get_miliseconds(timestamp);
-	pthread_mutex_unlock(&mutex);
-	pthread_mutex_destroy(&mutex);
-	return time;
+	return (timestamp.tv_sec * 1000 + timestamp.tv_usec / 1000);
 }
 
 void	ft_bzero(void *str, size_t n)

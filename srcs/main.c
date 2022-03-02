@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 12:54:22 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 15:09:22 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,28 +43,31 @@ t_data	*ft_init_data(t_data *data)
 	ft_bzero((void *)(data)->params, sizeof(data->params));
 	data->time_start = ft_get_current_time();
 	data->philos = NULL;
-	pthread_mutex_init(&(data)->start, NULL);
-	pthread_mutex_lock(&(data)->start);
 	return (data);
 }
 
 int	ft_init_threads(t_data *data)
 {
-	t_philo	**philos;
-	int		i;
+	/* 	t_philo	*philos;
 
-	philos = (t_philo **)data->philos;
-	i = -1;
+	philos = (t_philo *)data->philos;
+	
+	*/
 	if (!data->philos)
-		return (TRUE);
+		return (TRUE); 
+	int		i;
+	
+	i = -1;
 	while (++i < data->params[NUM_PHILOS])
 	{
-		if (pthread_create(&(philos[i]->th), NULL,
-				&eat_think_sleep, philos[i]) != 0)
+		if (pthread_create(&data->philos[i].th, NULL,
+				eat_think_sleep, &data->philos[i]) != 0)
 			return (TRUE);
-		philos[i]->last_eat = ft_get_current_time();
+		data->philos[i].last_eat = ft_get_current_time();
 	}
 	// TODO: DEATH CHECKER FOR MAIN THREAD
+/* 	while(!data->died)
+		continue; */
 	return (FALSE);
 }
 
@@ -73,41 +76,31 @@ int	ft_init_philosophers(t_data *data)
 	int	i;
 
 	i = -1;
-	data->philos = (t_philo **)malloc(sizeof(t_philo *) * data->params[NUM_PHILOS]);
-	data->forks = (pthread_mutex_t *)malloc(sizeof(pthread_mutex_t)
-			* data->params[NUM_PHILOS]);
-	if (!data->philos)
+	data->philos = malloc(sizeof(t_philo) * data->params[NUM_PHILOS]);
+	data->forks = malloc(sizeof(pthread_mutex_t) * data->params[NUM_PHILOS]);
+	if (!data->philos || !data->forks)
 		return (TRUE);
 	while (++i < data->params[NUM_PHILOS])
-	{
-		data->philos[i] = (t_philo *)malloc(sizeof(t_philo));
-		ft_bzero((void *)data->philos[i], sizeof(t_philo));
-		if (!data->philos[i])
-			return (-1);
-		data->philos[i]->id = i + 1;
-		data->philos[i]->data = (void *)malloc(sizeof(t_data *));
-		if (!data->philos[i]->data)
-			return (-1);
-		data->philos[i]->data = (void *)data;
-		data->philos[i]->r_fork = i;
 		pthread_mutex_init(&data->forks[i], NULL);
-		if (i > 0)
-			data->philos[i]->l_fork = i - 1;
+	pthread_mutex_init(&data->start, NULL);
+	pthread_mutex_init(&data->typing, NULL);
+	i = -1;
+	while (++i < data->params[NUM_PHILOS])
+	{
+		data->philos[i].id = i + 1;
+		data->philos[i].dt = data;
+		data->philos[i].has_right_fork = &data->forks[i];
+		if (i == 0)
+			data->philos[i].has_left_fork = &data->forks[data->params[NUM_PHILOS] - 1];
+		else
+			data->philos[i].has_left_fork = &data->forks[i - 1];
 	}
-	data->philos[0]->l_fork = i;
 	return (FALSE);
 }
 
 
 void	ft_clean(t_data *data)
 {
-	int i;
 
-	i = -1;
-	while (++i < data->params[NUM_PHILOS])
-	{
-		free(data->philos[i]);
-		data->philos[i] = NULL;
-	}
 	free(data->philos);
 }

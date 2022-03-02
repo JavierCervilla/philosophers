@@ -44,7 +44,6 @@ int ft_parse_arguments(t_data *data, int argc, char **argv)
 	while (i < argc && i < NUM_ARGS)
 	{
 		data->params[i] = ft_atoi(argv[i + 1]);
-		printf("PARAM: %d\n", data->params[i]);
 		if (data->params[i] < 1)
 			bad_args = TRUE;
 		i++;

@@ -6,15 +6,19 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 15:35:31 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/02 18:17:47 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
 
-int	main(int argc, char **argv)
+void leaks(void){
+	system("leaks -q philo");
+}
+
+int main(int argc, char **argv)
 {
-	t_data	*data;
+	t_data *data;
 
 	data = NULL;
 	if (throw_in_error(ft_check_arguments(argc, argv), ERR_BAD_ARGS))
@@ -28,13 +32,11 @@ int	main(int argc, char **argv)
 		return (STATUS_ERR);
 	if (throw_in_error(ft_init_threads(data), ERR_INIT_TH))
 		return (STATUS_ERR);
-/* 	while(!data->died)
-		continue; */
 	ft_clean(data);
-	return(STATUS_NO_ERR);
+	return (STATUS_NO_ERR);
 }
 
-t_data	*ft_init_data(t_data *data)
+t_data *ft_init_data(t_data *data)
 {
 	data = (t_data *)malloc(sizeof(t_data));
 	if (!data)
@@ -46,36 +48,32 @@ t_data	*ft_init_data(t_data *data)
 	return (data);
 }
 
-int	ft_init_threads(t_data *data)
+int ft_init_threads(t_data *data)
 {
-	/* 	t_philo	*philos;
-
-	philos = (t_philo *)data->philos;
+	int i;
 	
-	*/
 	if (!data->philos)
-		return (TRUE); 
-	int		i;
-	
+		return (TRUE);
+	if (data->params[NUM_PHILOS] == 1)
+	{
+		printf("%lli ms 1 %s\n", ft_get_current_time() - data->time_start, TAKING_FORK);
+		smart_sleep(data->params[TIME_TO_DIE]);
+		printf("%lli ms 1 %s", ft_get_current_time() - data->time_start, DYING);
+		return (FALSE);
+	}
 	i = -1;
 	while (++i < data->params[NUM_PHILOS])
 	{
 		if (pthread_create(&data->philos[i].th, NULL,
-				eat_think_sleep, &data->philos[i]) != 0)
+			eat_think_sleep, &data->philos[i]) != 0)
 			return (TRUE);
-		pthread_mutex_lock(&data->start);
-		data->philos[i].last_eat = ft_get_current_time();
-		pthread_mutex_unlock(&data->start);
 	}
-	// TODO: DEATH CHECKER FOR MAIN THREAD
-/* 	while(!data->died)
-		continue; */
 	return (FALSE);
 }
 
-int	ft_init_philosophers(t_data *data)
+int ft_init_philosophers(t_data *data)
 {
-	int	i;
+	int i;
 
 	i = -1;
 	data->philos = malloc(sizeof(t_philo) * data->params[NUM_PHILOS]);
@@ -91,18 +89,17 @@ int	ft_init_philosophers(t_data *data)
 	{
 		data->philos[i].id = i + 1;
 		data->philos[i].dt = data;
-		data->philos[i].has_right_fork = &data->forks[i];
+		data->philos[i].right_fork = &data->forks[i];
 		if (i == 0)
-			data->philos[i].has_left_fork = &data->forks[data->params[NUM_PHILOS] - 1];
+			data->philos[i].left_fork = &data->forks[data->params[NUM_PHILOS] - 1];
 		else
-			data->philos[i].has_left_fork = &data->forks[i - 1];
+			data->philos[i].left_fork = &data->forks[i - 1];
 	}
 	return (FALSE);
 }
 
-
-void	ft_clean(t_data *data)
+void ft_clean(t_data *data)
 {
-
 	free(data->philos);
+	free(data);
 }

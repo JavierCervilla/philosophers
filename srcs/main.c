@@ -6,11 +6,13 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 15:35:31 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/09 14:13:36 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
+
+
 
 int	main(int argc, char **argv)
 {
@@ -28,8 +30,7 @@ int	main(int argc, char **argv)
 		return (STATUS_ERR);
 	if (throw_in_error(ft_init_threads(data), ERR_INIT_TH))
 		return (STATUS_ERR);
-/* 	while(!data->died)
-		continue; */
+	ft_control_threads(data);
 	ft_clean(data);
 	return(STATUS_NO_ERR);
 }
@@ -40,6 +41,7 @@ t_data	*ft_init_data(t_data *data)
 	if (!data)
 		return (NULL);
 	data->died = FALSE;
+	data->all_eaten = FALSE;
 	ft_bzero((void *)(data)->params, sizeof(data->params));
 	data->time_start = ft_get_current_time();
 	data->philos = NULL;
@@ -48,11 +50,6 @@ t_data	*ft_init_data(t_data *data)
 
 int	ft_init_threads(t_data *data)
 {
-	/* 	t_philo	*philos;
-
-	philos = (t_philo *)data->philos;
-	
-	*/
 	if (!data->philos)
 		return (TRUE); 
 	int		i;
@@ -63,13 +60,7 @@ int	ft_init_threads(t_data *data)
 		if (pthread_create(&data->philos[i].th, NULL,
 				eat_think_sleep, &data->philos[i]) != 0)
 			return (TRUE);
-		pthread_mutex_lock(&data->start);
-		data->philos[i].last_eat = ft_get_current_time();
-		pthread_mutex_unlock(&data->start);
 	}
-	// TODO: DEATH CHECKER FOR MAIN THREAD
-/* 	while(!data->died)
-		continue; */
 	return (FALSE);
 }
 
@@ -92,6 +83,7 @@ int	ft_init_philosophers(t_data *data)
 		data->philos[i].id = i + 1;
 		data->philos[i].dt = data;
 		data->philos[i].has_right_fork = &data->forks[i];
+		data->philos[i].last_eat = data->time_start;
 		if (i == 0)
 			data->philos[i].has_left_fork = &data->forks[data->params[NUM_PHILOS] - 1];
 		else
@@ -103,6 +95,15 @@ int	ft_init_philosophers(t_data *data)
 
 void	ft_clean(t_data *data)
 {
+	int i = -1;
+	printf("LLEGO\n");
+	// LIMPIAR TODO LOS MUTEX, DESTROY y JOIN DE HILOS
+	while (++i < data->params[NUM_PHILOS] )
+	{
+		pthread_mutex_destroy(&data->forks[i]);
+	}
+	pthread_mutex_destroy(&data->start);
+	pthread_mutex_destroy(&data->typing);
 
 	free(data->philos);
 }

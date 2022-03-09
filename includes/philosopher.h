@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 15:44:36 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/09 13:52:01 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,6 @@
 #include <pthread.h>
 #include <string.h>
 #include <sys/time.h>
-
-# define NUM_PHILOS 0
-# define TIME_TO_DIE 1
-# define TIME_TO_EAT 2
-# define TIME_TO_SLEEP 3
-# define NUM_TIMES_EAT 4
-# define NUM_ARGS 5
 
 # define TAKING_FORK "has taken a fork"
 # define EATING "is eating"
@@ -45,6 +38,17 @@ Usage: ./philosopher <number of philosophers> \
 # define STATUS_NO_ERR 0
 # define STATUS_ERR 1
 
+
+
+typedef enum e_args
+{
+	NUM_PHILOS,
+	TIME_TO_DIE,
+	TIME_TO_EAT,
+	TIME_TO_SLEEP,
+	NUM_TIMES_EAT,
+	NUM_ARGS
+} t_args;
 
 typedef enum e_boolean
 {
@@ -75,15 +79,14 @@ typedef struct s_mutex
 
 typedef struct	s_philo
 {
-	int			id;
-	t_status	status;
-	pthread_t	th;
+	int				id;
+	t_status		status;
+	pthread_t		th;
 	pthread_mutex_t	*has_left_fork;
 	pthread_mutex_t	*has_right_fork;
-/* 	int			l_fork;
-	int			r_fork; */
-	long long	last_eat;
-	int			times_eat;
+	t_boolean		plenty;
+	long long		last_eat;
+	int				times_eat;
 	struct s_data	*dt;
 } t_philo;
 
@@ -91,7 +94,8 @@ typedef struct s_data
 {
 	long long		time_start;
 	int				params[NUM_ARGS];
-	t_boolean		died;
+	int				died;
+	t_boolean		all_eaten;
 	t_philo			*philos;
 	pthread_mutex_t	start;
 	pthread_mutex_t	typing;
@@ -127,7 +131,8 @@ void		ft_drop_forks(t_philo *philo);
 void		ft_sleep(t_philo *philo);
 void		ft_think(t_philo *philo);
 //CHECK
-int			check_philo_dead(t_data *data);
+t_boolean ft_control_threads(t_data *data);
+int	ft_death_check(t_data *data);
 //PRINT
 void		print_status_change(t_philo *philo, char *status);
 #endif

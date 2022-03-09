@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:58:32 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 15:45:39 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/09 12:43:57 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ void	smart_sleep(int time)
 	i = ft_get_current_time();
 	while (ft_get_current_time() < (i + time))
 	{
-		usleep(500);
+		usleep(200);
 	}
 }
 

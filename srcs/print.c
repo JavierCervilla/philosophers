@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:21:27 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/02 14:50:14 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/09 14:07:34 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,18 @@
 // status: 0 = think, 1 = take_fork, 2 = eat, 3 = sleep, 4 = dead
 void print_status_change(t_philo *philo, char *status)
 {
-	t_data	*data;
 	long	current_time;
 
-	data = (t_data *)philo->dt;
-	pthread_mutex_lock(&data->typing);
+	pthread_mutex_lock(&philo->dt->typing);
 	current_time = ft_get_current_time();
-	if (!data->died)
-		printf("%lli ms %i %s\n", current_time - data->time_start, philo->id, status);
-	pthread_mutex_unlock(&data->typing);
+	
+	if (!philo->dt->died)
+	{
+		if (status == EATING)
+			printf("%lli ms %i %s for %d time\n", current_time - philo->dt->time_start, philo->id, status, philo->times_eat);
+		else
+			printf("%lli ms %i %s\n", current_time - philo->dt->time_start, philo->id, status);
+	}
+	pthread_mutex_unlock(&philo->dt->typing);
 	return;
 }

@@ -57,8 +57,8 @@ int	ft_init_threads(t_data *data)
 	i = -1;
 	while (++i < data->params[NUM_PHILOS])
 	{
-		if (pthread_create(&data->philos[i].th, NULL,
-				eat_think_sleep, &data->philos[i]) != 0)
+		if (pthread_create(&data->philos[i]->th, NULL,
+				eat_think_sleep, data->philos[i]) != 0)
 			return (TRUE);
 	}
 	return (FALSE);
@@ -69,7 +69,7 @@ int	ft_init_philosophers(t_data *data)
 	int	i;
 
 	i = -1;
-	data->philos = malloc(sizeof(t_philo) * data->params[NUM_PHILOS]);
+	data->philos = malloc(sizeof(t_philo *) * data->params[NUM_PHILOS]);
 	data->forks = malloc(sizeof(pthread_mutex_t) * data->params[NUM_PHILOS]);
 	if (!data->philos || !data->forks)
 		return (TRUE);
@@ -80,14 +80,17 @@ int	ft_init_philosophers(t_data *data)
 	i = -1;
 	while (++i < data->params[NUM_PHILOS])
 	{
-		data->philos[i].id = i + 1;
-		data->philos[i].dt = data;
-		data->philos[i].has_right_fork = &data->forks[i];
-		data->philos[i].last_eat = data->time_start;
+		data->philos[i] = (t_philo *)malloc(sizeof(t_philo));
+		if (!data->philos[i])
+			return (TRUE);
+		data->philos[i]->id = i + 1;
+		data->philos[i]->dt = data;
+		data->philos[i]->has_right_fork = &data->forks[i];
+		data->philos[i]->last_eat = data->time_start;
 		if (i == 0)
-			data->philos[i].has_left_fork = &data->forks[data->params[NUM_PHILOS] - 1];
+			data->philos[i]->has_left_fork = &data->forks[data->params[NUM_PHILOS] - 1];
 		else
-			data->philos[i].has_left_fork = &data->forks[i - 1];
+			data->philos[i]->has_left_fork = &data->forks[i - 1];
 	}
 	return (FALSE);
 }
@@ -95,12 +98,13 @@ int	ft_init_philosophers(t_data *data)
 
 void	ft_clean(t_data *data)
 {
+	write(1, "LLEGO A CLEAN\n", 14);
 	int i = -1;
-	printf("LLEGO\n");
 	// LIMPIAR TODO LOS MUTEX, DESTROY y JOIN DE HILOS
 	while (++i < data->params[NUM_PHILOS] )
 	{
 		pthread_mutex_destroy(&data->forks[i]);
+		pthread_join(data->philos[i]->th, NULL);
 	}
 	pthread_mutex_destroy(&data->start);
 	pthread_mutex_destroy(&data->typing);

@@ -22,14 +22,20 @@ void	*eat_think_sleep(void *philo_address)
 		return (NULL);
 	if (philo->id % 2)
 		smart_sleep(2);
-	while (!philo->dt->died)
+	while (philo->dt->died == FALSE)
 	{
-		if (!philo->dt->died)
+		if (philo->dt->died == FALSE)
 			eating_routine(philo);
-		if (!philo->dt->died)
+		else
+			break ;
+		if (philo->dt->died == FALSE)
 			ft_sleep(philo);
-		if (!philo->dt->died)
+		else
+			break ;
+		if (philo->dt->died == FALSE)
 			ft_think(philo);
+		else
+			break ;
 	}
 	return (NULL);
 }
@@ -52,17 +58,16 @@ void	eating_routine(t_philo *philo)
 	ft_drop_forks(philo);
 }
 
-t_boolean ft_eat(t_philo *philo)
+void ft_eat(t_philo *philo)
 {
 	pthread_mutex_lock(&philo->dt->start);
 	philo->last_eat = ft_get_current_time();
 	philo->times_eat++;
 	print_status_change(philo, EATING);
 	smart_sleep(philo->dt->params[TIME_TO_EAT]);
-	pthread_mutex_unlock(&philo->dt->start);
 	if (philo->times_eat == philo->dt->params[NUM_TIMES_EAT])
-		return TRUE;
-	return FALSE;
+		philo->plenty = TRUE;
+	pthread_mutex_unlock(&philo->dt->start);
 }
 
 void ft_drop_forks(t_philo *philo)

@@ -22,7 +22,7 @@ void print_status_change(t_philo *philo, char *status)
 	
 	if (!philo->dt->died)
 	{
-		if (status == EATING)
+		if (ft_strcmp(status, EATING) == 0)
 			printf("%lli ms %i %s for %d time\n", current_time - philo->dt->time_start, philo->id, status, philo->times_eat);
 		else
 			printf("%lli ms %i %s\n", current_time - philo->dt->time_start, philo->id, status);

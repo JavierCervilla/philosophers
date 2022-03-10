@@ -66,7 +66,6 @@ typedef enum e_forks
 typedef enum e_status
 {
 	THINK,
-	TAKE_FORK,
 	EAT,
 	SLEEP,
 	DEAD
@@ -94,9 +93,9 @@ typedef struct s_data
 {
 	long long		time_start;
 	int				params[NUM_ARGS];
-	int				died;
+	t_boolean		died;
 	t_boolean		all_eaten;
-	t_philo			*philos;
+	t_philo			**philos;
 	pthread_mutex_t	start;
 	pthread_mutex_t	typing;
 	pthread_mutex_t	*forks;
@@ -109,6 +108,7 @@ long long	ft_get_current_time();
 long long	diff_time (long long t1, long long t2);
 t_boolean	ft_isdigit(int c);
 void		smart_sleep(int time);
+int			ft_strcmp(const char *s1, const char *s2);
 // ERROR
 t_boolean	throw_in_error(t_boolean error, char *msg);
 // PARSE
@@ -126,13 +126,12 @@ t_boolean	ft_check_right_fork (t_philo *philo);
 t_boolean	ft_check_left_fork (t_philo *philo);
 void		take_right_fork(t_philo *philo);
 void		take_left_fork(t_philo *philo);
-t_boolean	ft_eat(t_philo *philo);
+void		ft_eat(t_philo *philo);
 void		ft_drop_forks(t_philo *philo);
 void		ft_sleep(t_philo *philo);
 void		ft_think(t_philo *philo);
 //CHECK
-t_boolean ft_control_threads(t_data *data);
-int	ft_death_check(t_data *data);
+void		ft_control_threads(t_data *data);
 //PRINT
 void		print_status_change(t_philo *philo, char *status);
 #endif

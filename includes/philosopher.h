@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/09 13:52:01 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/11 14:01:31 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ typedef struct	s_philo
 	pthread_t		th;
 	pthread_mutex_t	*has_left_fork;
 	pthread_mutex_t	*has_right_fork;
-	t_boolean		plenty;
+	int				plenty;
 	long long		last_eat;
 	int				times_eat;
 	struct s_data	*dt;
@@ -93,9 +93,9 @@ typedef struct s_data
 {
 	long long		time_start;
 	int				params[NUM_ARGS];
-	t_boolean		died;
-	t_boolean		all_eaten;
-	t_philo			**philos;
+	int				died;
+	int				all_eaten;
+	t_philo			*philos;
 	pthread_mutex_t	start;
 	pthread_mutex_t	typing;
 	pthread_mutex_t	*forks;
@@ -132,6 +132,6 @@ void		ft_sleep(t_philo *philo);
 void		ft_think(t_philo *philo);
 //CHECK
 void		ft_control_threads(t_data *data);
-//PRINT
+//PmRINT
 void		print_status_change(t_philo *philo, char *status);
 #endif

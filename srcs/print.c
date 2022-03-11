@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:21:27 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/09 14:07:34 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/11 14:04:53 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void print_status_change(t_philo *philo, char *status)
 	if (!philo->dt->died)
 	{
 		if (ft_strcmp(status, EATING) == 0)
-			printf("%lli ms %i %s for %d time\n", current_time - philo->dt->time_start, philo->id, status, philo->times_eat);
+			printf("%lli ms %i %s for %d time\n", current_time - philo->dt->time_start, philo->id, status, philo->times_eat + 1);
 		else
 			printf("%lli ms %i %s\n", current_time - philo->dt->time_start, philo->id, status);
 	}

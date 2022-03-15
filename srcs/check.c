@@ -17,16 +17,10 @@ void	ft_check_plenty(t_data *data)
 	int i;
 	i = -1;
 	while(++i < data->params[NUM_PHILOS])
-	{
 		if (data->philos[i].times_eat < data->params[NUM_TIMES_EAT])
 			break ;
-	}
-	printf("I: %d NUM_TIMES_TO_EAT: %d\n", i, data->params[NUM_TIMES_EAT] );
 	if(i == data->params[NUM_PHILOS])
-	{
 		data->all_eaten = 1;
-		write(1, "All philos has eaten enough\n", strlen("All philos has eaten enough\n"));
-	}
 }
 
 void ft_control_threads(t_data *data)
@@ -47,7 +41,12 @@ void ft_control_threads(t_data *data)
 			pthread_mutex_unlock(&data->start);
 		}
 		if (data->died == 1)
-			break;
-		ft_check_plenty(data);
+			break ;
+		i = 0;
+		while(i < data->params[NUM_PHILOS] &&
+			data->philos[i].times_eat < data->params[NUM_TIMES_EAT])
+			i++;
+		if(i == data->params[NUM_PHILOS] - 1)
+			break ;
 	}
 }

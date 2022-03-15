@@ -26,6 +26,8 @@ int	main(int argc, char **argv)
 		throw_in_error(TRUE, ERR_INIT);
 	if (throw_in_error(ft_parse_arguments(data, argc - 1, argv), ERR_BAD_ARGS))
 		return (STATUS_ERR);
+	if (data->params[NUM_PHILOS] == 1)
+		return ft_lonley_philo(data);
 	if (throw_in_error(ft_init_philosophers(data), ERR_INIT_PHILO))
 		return (STATUS_ERR);
 	if (throw_in_error(ft_init_threads(data), ERR_INIT_TH))
@@ -34,6 +36,15 @@ int	main(int argc, char **argv)
 	ft_clean(data);
 	return(STATUS_NO_ERR);
 }
+
+int			ft_lonley_philo(t_data *data)
+{
+	printf("%lli ms %i %s", ft_get_current_time() - data->time_start, 1, TAKING_FORK);
+	smart_sleep(data->params[TIME_TO_DIE]);
+	printf("%lli ms %i %s", ft_get_current_time() - data->time_start, 1, DYING);
+	return (STATUS_NO_ERR);
+}
+
 
 t_data	*ft_init_data(t_data *data)
 {
@@ -99,16 +110,14 @@ int	ft_init_philosophers(t_data *data)
 
 void	ft_clean(t_data *data)
 {
-	write(1, "LLEGO A CLEAN\n", 14);
-	// LIMPIAR TODO LOS MUTEX, DESTROY y JOIN DE HILOS
 	int i = -1;
+	pthread_mutex_destroy(&data->start);
+	pthread_mutex_destroy(&data->typing);
 	while (++i < data->params[NUM_PHILOS] )
 		pthread_join(data->philos[i].th, NULL);
 	i = -1;
 	while (++i < data->params[NUM_PHILOS])
 		pthread_mutex_destroy(&data->forks[i]);
-	pthread_mutex_destroy(&data->start);
-	pthread_mutex_destroy(&data->typing);
 
 	free(data->philos);
 }

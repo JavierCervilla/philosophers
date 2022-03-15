@@ -22,10 +22,7 @@ void print_status_change(t_philo *philo, char *status)
 	
 	if (!philo->dt->died)
 	{
-		if (ft_strcmp(status, EATING) == 0)
-			printf("%lli ms %i %s for %d time\n", current_time - philo->dt->time_start, philo->id, status, philo->times_eat + 1);
-		else
-			printf("%lli ms %i %s\n", current_time - philo->dt->time_start, philo->id, status);
+		printf("%lli ms %i %s", current_time - philo->dt->time_start, philo->id, status);
 	}
 	pthread_mutex_unlock(&philo->dt->typing);
 	return;

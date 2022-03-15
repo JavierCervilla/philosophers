@@ -58,7 +58,7 @@ void	smart_sleep(int time)
 	i = ft_get_current_time();
 	while (ft_get_current_time() < (i + time))
 	{
-		usleep(500);
+		usleep(50);
 	}
 }
 

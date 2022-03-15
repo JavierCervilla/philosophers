@@ -19,12 +19,14 @@
 #include <string.h>
 #include <sys/time.h>
 
-# define TAKING_FORK "has taken a fork"
-# define EATING "is eating"
+# define MAX_INT 2147483647
+
+# define TAKING_FORK "has taken a fork\n"
+# define EATING "is eating\n"
+# define THINKING "is thinking\n"
+# define SLEEPING "is sleeping\n"
+# define DROPING_FORK "has dropen a fork\n"
 # define DYING "died"
-# define THINKING "is thinking"
-# define SLEEPING "is sleeping"
-# define DROPING_FORK "has dropen a fork"
 
 
 # define ERR_BAD_ARGS "\
@@ -37,7 +39,6 @@ Usage: ./philosopher <number of philosophers> \
 
 # define STATUS_NO_ERR 0
 # define STATUS_ERR 1
-
 
 
 typedef enum e_args
@@ -116,6 +117,7 @@ int			ft_check_arguments(int argc, char **argv);
 int			ft_parse_arguments(t_data *data, int argc, char **argv);
 //PHILOSOPHER
 t_data		*ft_init_data(t_data *data);
+int			ft_lonley_philo(t_data *data);
 int			ft_init_philosophers(t_data *data);
 int			ft_init_threads(t_data *data);
 void		ft_clean(t_data *data);
@@ -132,6 +134,6 @@ void		ft_sleep(t_philo *philo);
 void		ft_think(t_philo *philo);
 //CHECK
 void		ft_control_threads(t_data *data);
-//PmRINT
+//PRINT
 void		print_status_change(t_philo *philo, char *status);
 #endif

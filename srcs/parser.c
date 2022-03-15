@@ -48,7 +48,7 @@ int ft_parse_arguments(t_data *data, int argc, char **argv)
 			bad_args = TRUE;
 		i++;
 	}
-	if (NUM_ARGS == 5)
-		data->params[4] = -1;
+	if (argc == NUM_ARGS - 1)
+		data->params[NUM_TIMES_EAT] = MAX_INT;
 	return (bad_args);
 }

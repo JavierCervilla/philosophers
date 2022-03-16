@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/11 14:02:29 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/16 12:21:34 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,14 +110,31 @@ int	ft_init_philosophers(t_data *data)
 
 void	ft_clean(t_data *data)
 {
-	int i = -1;
+	int i;
+	
 	pthread_mutex_destroy(&data->start);
 	pthread_mutex_destroy(&data->typing);
-	while (++i < data->params[NUM_PHILOS] )
-		pthread_join(data->philos[i].th, NULL);
-	i = -1;
-	while (++i < data->params[NUM_PHILOS])
+	printf("dentro de clean antes bucle 0\n");
+	i = 0;
+	while (i < data->params[NUM_PHILOS])
+	{
+		printf("joining philos for %i\n", i);
+		if(pthread_join(data->philos[i].th, NULL) == 0)
+			printf("joined philos for %i\n", i);
+		else
+			printf("error joining philos for %i\n", i);
+		i++;
+	}
+	i = 0;
+	printf("dentro de clean antes bucle 1\n");
+	while (i < data->params[NUM_PHILOS])
+	{
 		pthread_mutex_destroy(&data->forks[i]);
+		i++;
+	}
 
 	free(data->philos);
+	free(data->forks);
+	free(data);
+	printf("saliendo de clean\n");
 }

@@ -6,13 +6,11 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/16 13:14:40 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/16 13:44:15 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
-
-
 
 int	main(int argc, char **argv)
 {
@@ -27,24 +25,25 @@ int	main(int argc, char **argv)
 	if (throw_in_error(ft_parse_arguments(data, argc - 1, argv), ERR_BAD_ARGS))
 		return (STATUS_ERR);
 	if (data->params[NUM_PHILOS] == 1)
-		return ft_lonley_philo(data);
+		return (ft_lonley_philo(data));
 	if (throw_in_error(ft_init_philosophers(data), ERR_INIT_PHILO))
 		return (STATUS_ERR);
 	if (throw_in_error(ft_init_threads(data), ERR_INIT_TH))
 		return (STATUS_ERR);
 	ft_control_threads(data);
 	ft_clean(data);
-	return(STATUS_NO_ERR);
-}
-
-int			ft_lonley_philo(t_data *data)
-{
-	printf("%lli ms %i %s", ft_get_current_time() - data->time_start, 1, TAKING_FORK);
-	smart_sleep(data->params[TIME_TO_DIE]);
-	printf("%lli ms %i %s", ft_get_current_time() - data->time_start, 1, DYING);
 	return (STATUS_NO_ERR);
 }
 
+int	ft_lonley_philo(t_data *data)
+{
+	printf("%lli ms %i %s",
+		ft_get_current_time() - data->time_start, 1, TAKING_FORK);
+	smart_sleep(data->params[TIME_TO_DIE]);
+	printf("%lli ms %i %s",
+		ft_get_current_time() - data->time_start, 1, DYING);
+	return (STATUS_NO_ERR);
+}
 
 t_data	*ft_init_data(t_data *data)
 {
@@ -61,11 +60,11 @@ t_data	*ft_init_data(t_data *data)
 
 int	ft_init_threads(t_data *data)
 {
-	if (!data->philos)
-		return (TRUE); 
-	int		i;
-	
+	int	i;
+
 	i = -1;
+	if (!data->philos)
+		return (TRUE);
 	while (++i < data->params[NUM_PHILOS])
 	{
 		if (pthread_create(&data->philos[i].th, NULL,
@@ -107,17 +106,16 @@ int	ft_init_philosophers(t_data *data)
 	return (FALSE);
 }
 
-
 void	ft_clean(t_data *data)
 {
-	int i;
+	int	i;
 
 	pthread_mutex_destroy(&data->start);
 	pthread_mutex_destroy(&data->typing);
 	i = 0;
 	while (i < data->params[NUM_PHILOS])
 	{
-		if(pthread_join(data->philos[i].th, NULL) != 0)
+		if (pthread_join(data->philos[i].th, NULL) != 0)
 			return ;
 		i++;
 	}

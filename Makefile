@@ -11,7 +11,7 @@ SRC = $(addsuffix .c, $(addprefix $(MAIN_DIR), $(MAIN))) \
 
 OBJ = $(SRC:c=o)
 
-FLAGS = -Wall -Werror -Wextra -pthread -g -g3 # -fsanitize=thread 
+FLAGS = -Wall -Werror -Wextra -pthread -g -g3 
 
 %.o: %.c
 	@${CC} ${FLAGS} -c $< -o $@  ${CPPFLAGS}

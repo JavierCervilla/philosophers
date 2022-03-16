@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 13:19:31 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/16 12:10:55 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/16 13:26:59 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 void ft_control_threads(t_data *data)
 {
 	int i;
-	
+
 	while (data->all_eaten == 0)
 	{
 		i = -1;
@@ -35,12 +35,8 @@ void ft_control_threads(t_data *data)
 		i = 0;
 		while (i < data->params[NUM_PHILOS] &&
 			data->philos[i].times_eat >= data->params[NUM_TIMES_EAT])
-		{
-			printf("philo %d is done eating\n", i);
 			i++;
-		}
 		if (i == data->params[NUM_PHILOS])
-			break ;
+			data->all_eaten = 1;
 	}
-	printf("fuera del while\n");
 }

@@ -17,3 +17,5 @@ echo "philo 7"
 cat res.txt | grep "7 is eating" | wc -l
 echo "philo 8"
 cat res.txt | grep "8 is eating" | wc -l 
+
+rm res.txt

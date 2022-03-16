@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/28 11:37:25 by jcervill          #+#    #+#             */
-/*   Updated: 2022/02/28 13:25:56 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/16 13:50:42 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,6 @@
 t_boolean	throw_in_error(t_boolean error, char *msg)
 {
 	if (error == TRUE)
-	{
 		perror(msg);
-		// TODO: REDIR TO EXIT OR EXIT HERE
-	}
 	return (error);
-
 }

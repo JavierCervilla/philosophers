@@ -12,11 +12,11 @@
 
 #include "../includes/philosopher.h"
 
-int ft_check_arguments(int argc, char **argv)
+int	ft_check_arguments(int argc, char **argv)
 {
-	int bad_args;
-	int i;
-	int j;
+	int	bad_args;
+	int	i;
+	int	j;
 
 	i = 0;
 	bad_args = FALSE;
@@ -34,10 +34,10 @@ int ft_check_arguments(int argc, char **argv)
 	return (bad_args);
 }
 
-int ft_parse_arguments(t_data *data, int argc, char **argv)
+int	ft_parse_arguments(t_data *data, int argc, char **argv)
 {
-	int i;
-	int bad_args;
+	int	i;
+	int	bad_args;
 
 	bad_args = FALSE;
 	i = 0;

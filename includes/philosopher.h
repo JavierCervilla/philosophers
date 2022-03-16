@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/16 13:34:51 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/16 14:05:03 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,8 @@ typedef struct s_mutex
 	pthread_mutex_t	mutex;
 }	t_mutex;
 
+typedef struct timeval t_timeval;
+
 typedef struct s_philo
 {
 	int				id;
@@ -100,10 +102,8 @@ typedef struct s_data
 void		ft_bzero(void *str, size_t n);
 int			ft_atoi(char *str);
 long long	ft_get_current_time(void);
-long long	diff_time(long long t1, long long t2);
 t_boolean	ft_isdigit(int c);
 void		smart_sleep(int time);
-int			ft_strcmp(const char *s1, const char *s2);
 void		ft_putnbr(int nb);
 // ERROR
 t_boolean	throw_in_error(t_boolean error, char *msg);

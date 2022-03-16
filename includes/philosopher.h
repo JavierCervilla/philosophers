@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/11 14:01:31 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/16 11:36:57 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,7 @@ long long	diff_time (long long t1, long long t2);
 t_boolean	ft_isdigit(int c);
 void		smart_sleep(int time);
 int			ft_strcmp(const char *s1, const char *s2);
+void		ft_putnbr(int nb);
 // ERROR
 t_boolean	throw_in_error(t_boolean error, char *msg);
 // PARSE

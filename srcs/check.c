@@ -6,22 +6,11 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 13:19:31 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/16 10:24:05 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/16 11:42:42 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/philosopher.h"
-
-void	ft_check_plenty(t_data *data)
-{
-	int i;
-	i = -1;
-	while(++i < data->params[NUM_PHILOS])
-		if (data->philos[i].times_eat < data->params[NUM_TIMES_EAT])
-			break ;
-	if(i == data->params[NUM_PHILOS])
-		data->all_eaten = 1;
-}
 
 void ft_control_threads(t_data *data)
 {
@@ -44,10 +33,10 @@ void ft_control_threads(t_data *data)
 		if (data->died == 1)
 			break ;
 		i = 0;
-		while(i < data->params[NUM_PHILOS] &&
-			data->philos[i].times_eat < data->params[NUM_TIMES_EAT])
+		while (i < data->params[NUM_PHILOS] &&
+			data->philos[i].times_eat >= data->params[NUM_TIMES_EAT])
 			i++;
-		if(i == data->params[NUM_PHILOS] - 1)
+		if (i == data->params[NUM_PHILOS] - 1)
 			break ;
 	}
 }

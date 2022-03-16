@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/12 13:45:02 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/11 14:04:18 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/16 11:31:23 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	*eat_think_sleep(void *philo_address)
 	philo = (t_philo *)philo_address;
 	if (!philo)
 		return (NULL);
-	if (philo->id % 2 == 0)
+	if (philo->id % 2)
 		smart_sleep(2);
 	while (!philo->dt->died)
 	{

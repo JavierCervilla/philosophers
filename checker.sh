@@ -1,21 +1,19 @@
 #!/bin/bash
 
-./dist/philo 8 120 60 60 5 > res.txt
-echo "philo 1"
-cat res.txt | grep "1 is eating" | wc -l
-echo "philo 2"
-cat res.txt | grep "2 is eating" | wc -l
-echo "philo 3"
-cat res.txt | grep "3 is eating" | wc -l
-echo "philo 4"
-cat res.txt | grep "4 is eating" | wc -l 
-echo "philo 5"
-cat res.txt | grep "5 is eating" | wc -l
-echo "philo 6"
-cat res.txt | grep "6 is eating" | wc -l
-echo "philo 7"
-cat res.txt | grep "7 is eating" | wc -l
-echo "philo 8"
-cat res.txt | grep "8 is eating" | wc -l 
+numPhilos=10
+timeToDie=100
+timeToEat=60
+timeToSleep=60
+maxEating=5
 
+./dist/philo $numPhilos $timeToDie $timeToEat $timeToSleep $maxEating > res.txt
+i=1
+while [ $i -le $numPhilos ]
+do
+    timesEaten=$(cat res.txt | grep "$i is eating" | wc -l)
+    died=$(cat res.txt | grep "died")
+    printf "philo $i: has eaten $timesEaten times\n"
+    ((i++))
+done
+printf "$died"
 rm res.txt

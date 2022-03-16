@@ -20,7 +20,7 @@ void	*eat_think_sleep(void *philo_address)
 	if (!philo)
 		return (NULL);
 	if (philo->id % 2)
-		smart_sleep(2);
+		usleep(1000);
 	while (!philo->dt->died && !philo->dt->all_eaten)
 	{
 		if (!philo->dt->died && !philo->dt->all_eaten)

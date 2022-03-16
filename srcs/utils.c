@@ -55,13 +55,13 @@ void	smart_sleep(int time)
 	i = ft_get_current_time();
 	while (ft_get_current_time() < (i + time))
 	{
-		usleep(500);
+		usleep(50);
 	}
 }
 
 long long	ft_get_current_time(void)
 {
-	t_timeval	timestamp;
+	struct timeval	timestamp;
 
 	gettimeofday(&timestamp, NULL);
 	return (timestamp.tv_sec * 1000 + timestamp.tv_usec / 1000);

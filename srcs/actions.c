@@ -13,7 +13,7 @@
 #include "../includes/philosopher.h"
 
 void	ft_drop_forks(t_philo *philo)
-{
+{	
 	pthread_mutex_unlock(philo->has_right_fork);
 	pthread_mutex_unlock(philo->has_left_fork);
 	print_status_change(philo, DROPING_FORK);
@@ -21,7 +21,6 @@ void	ft_drop_forks(t_philo *philo)
 
 void	ft_think(t_philo	*philo)
 {
-	philo->status = THINK;
 	print_status_change(philo, THINKING);
 }
 
@@ -29,7 +28,6 @@ void	ft_sleep(t_philo *philo)
 {
 	if (!philo->dt->died)
 	{
-		philo->status = SLEEP;
 		print_status_change(philo, SLEEPING);
 		smart_sleep(philo->dt->params[TIME_TO_SLEEP]);
 	}

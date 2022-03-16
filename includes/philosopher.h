@@ -58,25 +58,9 @@ typedef enum e_forks
 	BOTH
 }	t_forks;
 
-typedef enum e_status
-{
-	THINK,
-	EAT,
-	SLEEP,
-	DEAD
-}	t_status;
-
-typedef struct s_mutex
-{
-	pthread_mutex_t	mutex;
-}	t_mutex;
-
-typedef struct timeval t_timeval;
-
 typedef struct s_philo
 {
 	int				id;
-	t_status		status;
 	pthread_t		th;
 	pthread_mutex_t	*has_left_fork;
 	pthread_mutex_t	*has_right_fork;

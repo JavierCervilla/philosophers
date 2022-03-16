@@ -30,7 +30,6 @@ int	main(int argc, char **argv)
 		return (STATUS_ERR);
 	if (throw_in_error(ft_init_threads(data), ERR_INIT_TH))
 		return (STATUS_ERR);
-	ft_control_threads(data);
 	ft_clean(data);
 	return (STATUS_NO_ERR);
 }
@@ -71,6 +70,7 @@ int	ft_init_threads(t_data *data)
 				eat_think_sleep, &data->philos[i]) != 0)
 			return (TRUE);
 	}
+	ft_control_threads(data);
 	return (FALSE);
 }
 

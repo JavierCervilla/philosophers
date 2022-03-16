@@ -1,11 +1,10 @@
 #!/bin/bash
 
 philos=5
-time2Die=200
-time2Eat=60
-time2Sleep=60
-maxEat=5
-
+time2Die=800
+time2Eat=200
+time2Sleep=200
+maxEat=7
 
 function check {
     ./dist/philo $1 $2 $3 $4 $5 > res.txt
@@ -18,9 +17,12 @@ function check {
         printf "philo $i has eaten $timesEaten times\n"
         ((i++))
     done
-    printf "$died"
+    printf "$died\n"
     rm res.txt
-
 }
 
-check $philos $time2Die $time2Eat $time2Sleep $maxEat
+check 1 800 200 200
+check 5 800 200 200 50
+check 5 800 200 200 7
+check 4 410 200 200 50
+check 4 310 200 100 50

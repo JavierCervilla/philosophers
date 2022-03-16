@@ -24,7 +24,7 @@
 # define THINKING "is thinking\n"
 # define SLEEPING "is sleeping\n"
 # define DROPING_FORK "has dropen a fork\n"
-# define DYING "died"
+# define DYING "died\n"
 # define ERR_BAD_ARGS "\
 Usage: ./philosopher <number of philosophers> \
 <time to die> <time to eat> <time to sleep> \

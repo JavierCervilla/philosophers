@@ -16,7 +16,7 @@ void	ft_drop_forks(t_philo *philo)
 {	
 	pthread_mutex_unlock(philo->has_right_fork);
 	pthread_mutex_unlock(philo->has_left_fork);
-	print_status_change(philo, DROPING_FORK);
+	//print_status_change(philo, DROPING_FORK);
 }
 
 void	ft_think(t_philo	*philo)

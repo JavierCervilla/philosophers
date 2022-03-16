@@ -34,16 +34,6 @@ int	main(int argc, char **argv)
 	return (STATUS_NO_ERR);
 }
 
-int	ft_lonley_philo(t_data *data)
-{
-	printf("%lli ms %i %s",
-		ft_get_current_time() - data->time_start, 1, TAKING_FORK);
-	smart_sleep(data->params[TIME_TO_DIE]);
-	printf("%lli ms %i %s",
-		ft_get_current_time() - data->time_start, 1, DYING);
-	return (STATUS_NO_ERR);
-}
-
 t_data	*ft_init_data(t_data *data)
 {
 	data = (t_data *)malloc(sizeof(t_data));
@@ -57,6 +47,17 @@ t_data	*ft_init_data(t_data *data)
 	return (data);
 }
 
+
+int	ft_lonley_philo(t_data *data)
+{
+	printf("%lli ms %i %s",
+		ft_get_current_time() - data->time_start, 1, TAKING_FORK);
+	smart_sleep(data->params[TIME_TO_DIE]);
+	printf("%lli ms %i %s",
+		ft_get_current_time() - data->time_start, 1, DYING);
+	return (STATUS_NO_ERR);
+}
+
 int	ft_init_threads(t_data *data)
 {
 	int	i;
@@ -64,6 +65,7 @@ int	ft_init_threads(t_data *data)
 	i = -1;
 	if (!data->philos)
 		return (TRUE);
+	data->time_start = ft_get_current_time();
 	while (++i < data->params[NUM_PHILOS])
 	{
 		if (pthread_create(&data->philos[i].th, NULL,

@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/17 13:19:31 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/11 14:03:53 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/16 10:24:05 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void ft_control_threads(t_data *data)
 				data->died = 1;
 			}
 			pthread_mutex_unlock(&data->start);
+			usleep(100);
 		}
 		if (data->died == 1)
 			break ;

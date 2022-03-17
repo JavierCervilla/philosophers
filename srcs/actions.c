@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 13:54:01 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/16 13:56:33 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/17 10:12:06 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,8 @@ void	ft_drop_forks(t_philo *philo)
 
 void	ft_think(t_philo	*philo)
 {
-	print_status_change(philo, THINKING);
+	if (!philo->dt->died)
+		print_status_change(philo, THINKING);
 }
 
 void	ft_sleep(t_philo *philo)

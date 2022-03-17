@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:58:32 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/16 14:04:33 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/17 09:55:51 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,7 @@ t_boolean	ft_isdigit(int c)
 
 void	smart_sleep(int time)
 {
-	long long	i;
+	unsigned long	i;
 
 	i = ft_get_current_time();
 	while (ft_get_current_time() < (i + time))
@@ -59,7 +59,7 @@ void	smart_sleep(int time)
 	}
 }
 
-long long	ft_get_current_time(void)
+unsigned long	ft_get_current_time(void)
 {
 	struct timeval	timestamp;
 

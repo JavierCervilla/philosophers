@@ -12,7 +12,7 @@ function check {
     i=1
     while [ $i -le $1 ]
     do
-        timesEaten=$(cat res.txt | grep "$i is eating" | wc -l | tr -d ' ')
+        timesEaten=$(cat res.txt | grep " $i is eating" | wc -l | tr -d ' ')
         died=$(cat res.txt | grep "died")
         printf "philo $i has eaten $timesEaten times\n"
         ((i++))
@@ -21,8 +21,11 @@ function check {
     rm res.txt
 }
 
-check 1 800 200 200
-check 5 800 200 200 50
-check 5 800 200 200 7
-check 4 410 200 200 50
-check 4 310 200 100 50
+check 100 130 60 60 10
+# check 1 800 200 200
+# check 5 800 200 200 50
+# check 5 800 200 200 7
+# check 4 410 200 200 50
+# check 4 310 200 100 50
+# check 5 310 100 100 50
+# check 100 130 65 65 50

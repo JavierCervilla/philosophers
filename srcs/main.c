@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/16 13:44:15 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/17 10:15:44 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,10 +50,10 @@ t_data	*ft_init_data(t_data *data)
 
 int	ft_lonley_philo(t_data *data)
 {
-	printf("%lli ms %i %s",
+	printf("%lu ms %i %s",
 		ft_get_current_time() - data->time_start, 1, TAKING_FORK);
 	smart_sleep(data->params[TIME_TO_DIE]);
-	printf("%lli ms %i %s",
+	printf("%lu ms %i %s",
 		ft_get_current_time() - data->time_start, 1, DYING);
 	return (STATUS_NO_ERR);
 }
@@ -130,5 +130,5 @@ void	ft_clean(t_data *data)
 	free(data->philos);
 	free(data->forks);
 	free(data);
-	//system("leaks philo");
+	system("leaks philo");
 }

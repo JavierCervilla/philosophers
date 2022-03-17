@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 23:53:58 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/17 09:56:44 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/17 10:52:41 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,10 +62,10 @@ typedef struct s_philo
 {
 	int				id;
 	pthread_t		th;
-	pthread_mutex_t	*has_left_fork;
-	pthread_mutex_t	*has_right_fork;
+	pthread_mutex_t	*l_fork;
+	pthread_mutex_t	*r_fork;
 	int				plenty;
-	unsigned long		last_eat;
+	unsigned long	last_eat;
 	int				times_eat;
 	struct s_data	*dt;
 }	t_philo;
@@ -83,36 +83,37 @@ typedef struct s_data
 }	t_data;
 
 // UTILS
-void		ft_bzero(void *str, size_t n);
-int			ft_atoi(char *str);
+void			ft_bzero(void *str, size_t n);
+int				ft_atoi(char *str);
 unsigned long	ft_get_current_time(void);
-t_boolean	ft_isdigit(int c);
-void		smart_sleep(int time);
-void		ft_putnbr(int nb);
+t_boolean		ft_isdigit(int c);
+void			smart_sleep(int time);
+void			ft_putnbr(int nb);
 // ERROR
-t_boolean	throw_in_error(t_boolean error, char *msg);
+t_boolean		throw_in_error(t_boolean error, char *msg);
 // PARSE
-int			ft_check_arguments(int argc, char **argv);
-int			ft_parse_arguments(t_data *data, int argc, char **argv);
+int				ft_check_arguments(int argc, char **argv);
+int				ft_parse_arguments(t_data *data, int argc, char **argv);
 //PHILOSOPHER
-t_data		*ft_init_data(t_data *data);
-int			ft_lonley_philo(t_data *data);
-int			ft_init_philosophers(t_data *data);
-int			ft_init_threads(t_data *data);
-void		ft_clean(t_data *data);
-void		*eat_think_sleep(void *philo_address);
+void			ft_fill_philo(t_data *data, int i);
+t_data			*ft_init_data(t_data *data);
+int				ft_lonley_philo(t_data *data);
+int				ft_init_philosophers(t_data *data);
+int				ft_init_threads(t_data *data);
+void			ft_clean(t_data *data);
+void			*eat_think_sleep(void *philo_address);
 //MAIN
-void		eating_routine(t_philo *philo);
-t_boolean	ft_check_right_fork(t_philo *philo);
-t_boolean	ft_check_left_fork(t_philo *philo);
-void		take_right_fork(t_philo *philo);
-void		take_left_fork(t_philo *philo);
-void		ft_eat(t_philo *philo);
-void		ft_drop_forks(t_philo *philo);
-void		ft_sleep(t_philo *philo);
-void		ft_think(t_philo *philo);
+void			eating_routine(t_philo *philo);
+t_boolean		ft_check_right_fork(t_philo *philo);
+t_boolean		ft_check_left_fork(t_philo *philo);
+void			take_right_fork(t_philo *philo);
+void			take_left_fork(t_philo *philo);
+void			ft_eat(t_philo *philo);
+void			ft_drop_forks(t_philo *philo);
+void			ft_sleep(t_philo *philo);
+void			ft_think(t_philo *philo);
 //CHECK
-void		ft_control_threads(t_data *data);
+void			ft_control_threads(t_data *data);
 //PRINT
-void		print_status_change(t_philo *philo, char *status);
+void			print_status_change(t_philo *philo, char *status);
 #endif

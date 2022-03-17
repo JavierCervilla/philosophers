@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/16 13:54:01 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/17 10:12:06 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/17 10:47:03 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,8 @@
 
 void	ft_drop_forks(t_philo *philo)
 {	
-	pthread_mutex_unlock(philo->has_right_fork);
-	pthread_mutex_unlock(philo->has_left_fork);
-	//print_status_change(philo, DROPING_FORK);
+	pthread_mutex_unlock(philo->r_fork);
+	pthread_mutex_unlock(philo->l_fork);
 }
 
 void	ft_think(t_philo	*philo)
@@ -36,12 +35,12 @@ void	ft_sleep(t_philo *philo)
 
 void	take_right_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->has_right_fork);
+	pthread_mutex_lock(philo->r_fork);
 	print_status_change(philo, TAKING_FORK);
 }
 
 void	take_left_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->has_left_fork);
+	pthread_mutex_lock(philo->l_fork);
 	print_status_change(philo, TAKING_FORK);
 }

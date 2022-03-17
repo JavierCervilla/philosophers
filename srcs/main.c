@@ -6,7 +6,7 @@
 /*   By: jcervill <jcervill@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/08 00:29:56 by jcervill          #+#    #+#             */
-/*   Updated: 2022/03/17 10:15:44 by jcervill         ###   ########.fr       */
+/*   Updated: 2022/03/17 10:52:47 by jcervill         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,6 @@ t_data	*ft_init_data(t_data *data)
 	return (data);
 }
 
-
 int	ft_lonley_philo(t_data *data)
 {
 	printf("%lu ms %i %s",
@@ -56,24 +55,6 @@ int	ft_lonley_philo(t_data *data)
 	printf("%lu ms %i %s",
 		ft_get_current_time() - data->time_start, 1, DYING);
 	return (STATUS_NO_ERR);
-}
-
-int	ft_init_threads(t_data *data)
-{
-	int	i;
-
-	i = -1;
-	if (!data->philos)
-		return (TRUE);
-	data->time_start = ft_get_current_time();
-	while (++i < data->params[NUM_PHILOS])
-	{
-		if (pthread_create(&data->philos[i].th, NULL,
-				eat_think_sleep, &data->philos[i]) != 0)
-			return (TRUE);
-	}
-	ft_control_threads(data);
-	return (FALSE);
 }
 
 int	ft_init_philosophers(t_data *data)
@@ -94,16 +75,7 @@ int	ft_init_philosophers(t_data *data)
 	{
 		if (!&data->philos[i])
 			return (TRUE);
-		data->philos[i].id = i + 1;
-		data->philos[i].dt = data;
-		data->philos[i].has_right_fork = &data->forks[i];
-		data->philos[i].last_eat = data->time_start;
-		data->philos[i].plenty = 0;
-		data->philos[i].times_eat = 0;
-		if (i == 0)
-			data->philos[i].has_left_fork = &data->forks[data->params[NUM_PHILOS] - 1];
-		else
-			data->philos[i].has_left_fork = &data->forks[i - 1];
+		ft_fill_philo(data, i);
 	}
 	return (FALSE);
 }
@@ -130,5 +102,4 @@ void	ft_clean(t_data *data)
 	free(data->philos);
 	free(data->forks);
 	free(data);
-	system("leaks philo");
 }
